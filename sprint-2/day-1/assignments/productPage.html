@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button><a href="index.html">adminPage</a></button>
+    <button onclick="sortltoh()">sorting LtoH</button>
+    <select onchange="filtered()" id="chhato">
+        <option value="All">All</option>
+        <option value="nike">nike</option>
+        <option value="pumma">pumma</option>
+        <option value="addias">addias</option>
+    </select>
+    <div id="container">
+        
+    </div>
+</body>
+</html>
+<script>
+
+let arr = JSON.parse(localStorage.getItem("product_list"))||[]
+
+window.addEventListener("load",()=> appendData(arr))
+let appendData = (arr)=>{
+    document.querySelector("#container").innerHTML=null;
+arr.forEach((el,i) => {
+    
+    let div = document.createElement("div")
+
+    let brand = document.createElement("h3")
+    brand.innerText = el.brand
+
+    let name = document.createElement("h4")
+    name.innerText= el.name
+
+    let price = document.createElement("h5")
+    price.innerText = el.price
+
+    let img = document.createElement("img")
+    img.src = el.image
+
+    let remove = document.createElement("button")
+    remove.innerText = "Remove"
+    remove.addEventListener("click",()=>{
+        removeData(el,i)
+    })
+
+    let add = document.createElement("button")
+    add.innerText = "Add"
+    add.addEventListener("click",()=>{
+        addData(el,i)
+    })
+
+    div.append(img, brand, name, price, add, remove)
+    document.querySelector("#container").append(div)
+});
+}
+
+let removeData = (el,i)=>{
+    arr.splice(i,1)
+    localStorage.setItem('product_list',JSON.stringify(arr))
+    window.location.reload()
+}
+
+let addData = (el,i)=>{
+    let arr = JSON.parse(localStorage.getItem("product_list"))||[]
+    arr.filter((elem,index)=>{
+        if(i===index){
+            let addPage = JSON.parse(localStorage.getItem("additionalData")) || [];
+
+            addPage.push(elem)
+            localStorage.setItem("additionalData",JSON.stringify(addPage))
+        }else{
+            return index !==i
+        }
+    })
+}
+
+let sortltoh = () =>{
+    let arr = JSON.parse(localStorage.getItem("product_list"))||[]
+    arr.sort((a,b)=>{
+        if(a.price < b.price) {return -1}
+        if (a.price > b.price) {return 1}
+        else {return 0}
+    })
+   appendData(arr) 
+}
+
+
+// let filterPro = ()=>{
+//     let arr = JSON.parse(localStorage.getItem("product_list"))||[]
+//     let filtering = document.querySelector("#chhato").value;
+//     arr.filter((el)=>{
+//         if(filtering === 'pumma'){
+//             appendData(arr)
+//         }else{
+//             appendData(arr)
+//         }
+        
+//     })
+// }
+// console.log(arr)
+function filtered(){
+    let arr = JSON.parse(localStorage.getItem("product_list"))
+    let filtering = document.querySelector("#chhato").value;
+    
+    let x = arr.filter((el)=>{
+      return el.brand===filtering
+    })
+    console.log(x)
+    appendData(x)
+}
+</script>

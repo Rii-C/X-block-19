@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="product_form">
+        <input type="text" placeholder="product_brand" id="product_brand">
+        <input type="text" placeholder="product_name" id="product_name">
+        <input type="number" placeholder="product_price" id="product_price">
+        <input type="url" placeholder="product_image" id="product_image">
+        <button onclick="myfunc()" id="submit">submit</button>
+    </form>
+    <button><a href="productPage.html">database</a></button>
+</body>
+</html>
+
+
+<script>
+
+    function myfunc(){
+
+        let brand = document.getElementById("product_brand").value
+        let name = +document.getElementById("product_name").value
+        let price = document.getElementById("product_price").value
+        let image = document.getElementById("product_image").value
+
+        let p = new product(brand,name,price,image)
+
+        let arr = JSON.parse(localStorage.getItem("product_list"))||[]
+
+        arr.push(p)
+        localStorage.setItem("product_list", JSON.stringify(arr))
+        
+    }
+
+    function product(b,n,p,i){
+        this.brand = b;
+        this.name = n;
+        this.price = p;
+        this.image = i;
+    }
+</script>
